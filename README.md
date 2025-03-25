@@ -55,7 +55,7 @@
 
 * Clone repository Project-CNW về máy thông qua dòng lệnh sau:
 ```bash
-> git clone https://github.com/DuongThanhTin/Project-CNW
+>https://github.com/thuanAlex30/Ecomerce.git
 ```
 * Khi đã clone về máy, tạo file .env trong thư mục chứa phần mềm. Trong file .env: SECRECT_KEY = 'PMCL_CNW'
 
