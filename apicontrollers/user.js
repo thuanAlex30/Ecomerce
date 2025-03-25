@@ -217,73 +217,93 @@ module.exports = {
   },
 
   //Cart
-  getCartPage: function(req,res,next){
+  getCartPage: function(req, res, next) {
     let message = req.flash("errorMessage");
-    let boolError = req.flash("error")
-    if (message.length > 0) {
-      message = message[0];
-    } else {
-      message = null;
-    }
-    if(boolError.length>0){
-      boolError = 'true';
-    }else{
-      boolError = 'false';
-    }
+    let boolError = req.flash("error");
+
+    message = message.length > 0 ? message[0] : null;
+    boolError = boolError.length > 0 ? 'true' : 'false';
+
     UserModel.findById(req.session.user._id)
-    .then(user=>{
-     user.populate("cart.items.productId")
-     .execPopulate()
-     .then(user => {
-      let products = user.cart.items;
-      console.log(products);
-      res.render("product/page-cart", {
-        path: "/cart",
-        pageTitle: "Your Cart",
-        products: products,
-        sum: user.cart.sum,
-        errorMessage: message,
-        error: boolError,
-      });
-     })
-   })
-     .catch(err => console.log(err));
+        .populate("cart.items.productId") // ✅ Không cần .execPopulate()
+        .then(user => {
+          if (!user) {
+            return res.redirect("/login");
+          }
+          let products = user.cart.items;
+          console.log("Giỏ hàng:", products);
+          res.render("product/page-cart", {
+            path: "/cart",
+            pageTitle: "Your Cart",
+            products: products,
+            sum: user.cart.sum,
+            errorMessage: message,
+            error: boolError,
+          });
+        })
+        .catch(err => {
+          console.error("Lỗi khi lấy giỏ hàng:", err);
+          res.redirect("/cart");
+        });
   },
 
-  //API show cart
-  getCart: function(req,res,next){
-   UserModel.findById(req.session.user._id)
-   .then(user=>{
-    user.populate("cart.items.productId")
-    .execPopulate()
-    .then(user1 => {  
-      console.log("TCL: user.cart.sum", user1.cart.sum)
-        res.json({
-            "sumPrice" : user.cart.sum,        
+
+  getCart: function(req, res, next) {
+    UserModel.findById(req.session.user._id)
+        .populate("cart.items.productId") // ✅ Không cần execPopulate()
+        .then(user => {
+          if (!user) {
+            return res.json({ sumPrice: 0, products: [] });
+          }
+          console.log("Giỏ hàng:", user.cart.items);
+          res.json({
+            "sumPrice": user.cart.sum,
             "products": user.cart.items
+          });
         })
-    })
-  })
-    .catch(err => console.log(err));
+        .catch(err => {
+          console.error("Lỗi khi lấy giỏ hàng:", err);
+          res.status(500).json({ message: "Lỗi server", error: err });
+        });
   },
-  
-  //Add Product
-  postCart: function(req,res,next){
+
+  postCart: function(req, res, next) {
     console.log("Add Product to Cart");
     const productId = req.body.productId;
-    console.log("TCL: productId", productId)
-    var newQuantity = req.body.productNumber; 
-    console.log("TCL: newQuantity", newQuantity) 
+    console.log("TCL: productId", productId);
+    var newQuantity = parseInt(req.body.productNumber, 10);
+    console.log("TCL: newQuantity", newQuantity);
+
     ProductModel.findById(productId)
-    .then(product => {
-        UserModel.findById(req.session.user._id)
-        .then(user=>{
-          return user.addToCart(product, newQuantity);
+        .then(product => {
+          return UserModel.findById(req.session.user._id);
         })
-    })
-    .then(result => {
-        res.redirect("/");
-    })
+        .then(user => {
+          if (!user) {
+            return res.redirect("/login");
+          }
+
+          // Thêm sản phẩm vào giỏ hàng
+          const cartProductIndex = user.cart.items.findIndex(cp =>
+              cp.productId.toString() === productId.toString()
+          );
+
+          if (cartProductIndex >= 0) {
+            user.cart.items[cartProductIndex].quantity += newQuantity;
+          } else {
+            user.cart.items.push({ productId: productId, quantity: newQuantity });
+          }
+
+          return user.save();
+        })
+        .then(() => {
+          console.log("Thêm vào giỏ hàng thành công");
+          res.redirect("/cart");
+        })
+        .catch(err => {
+          console.error("Lỗi khi thêm vào giỏ hàng:", err);
+          res.status(500).send("Lỗi server");
+        });
   },
 
 

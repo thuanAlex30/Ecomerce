@@ -19,9 +19,10 @@
 <script>
     var AddToCart = (function(){
         var getQuantityOfProduct = function() {
-            var result = $('#pQuantity').val();
-            return result;
+            var result = parseInt($('#pQuantity').val(), 10);
+            return isNaN(result) ? 0 : result; // Tránh lỗi NaN
         };
+
         var plusProduct = function() {
             var num = getQuantityOfProduct() + 1;
             $('#pQuantity').val(num);
@@ -30,10 +31,16 @@
 
         var minusProduct = function() {
             var num = getQuantityOfProduct() - 1;
+            if (num < 1) num = 1; // Không cho số lượng nhỏ hơn 1
             $('#pQuantity').val(num);
             console.log("Number of product after minus: " + num);
         };
-        return
-    }());
+
+        return {
+            plus: plusProduct,
+            minus: minusProduct
+        };
+    })();
+
 
 </script>
