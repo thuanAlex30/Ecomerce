@@ -84,9 +84,3 @@
 * [body-parser](https://www.npmjs.com/package/body-parser)
 * [connect-mongodb-session](https://www.npmjs.com/package/connect-mongodb-session)
 
-## Đội ngũ phát triển
-* [Dương Thạnh Tín](https://github.com/DuongThanhTin) (MSSV: 16521241 - Lớp: PMCL2016.3)
-* [Nguyễn Phương Vương](https://github.com/phuongvuong98)
-
-## Giấy phép
-* [MIT](https://github.com/DuongThanhTin/Project-CNW/blob/master/LICENSE)
