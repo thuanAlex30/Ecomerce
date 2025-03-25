@@ -41,7 +41,7 @@ const newProductSchema = new Schema({
    
 })
 
-const newProductMongoose = mongoose.model('newproduct',newProductSchema);
+const newProductMongoose = mongoose.model('newproduct',newProductSchema,'newproduct');
 
 
 //Module.exports

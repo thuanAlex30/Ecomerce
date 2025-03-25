@@ -193,7 +193,7 @@ userSchema.methods.CheckOut = function(name,mobilenumber,address){
   return this.save();
 }
 
-const userMongoose = mongoose.model("user", userSchema);
+const userMongoose = mongoose.model('user', userSchema,'user');
 
 //Module.exports
 module.exports = userMongoose;

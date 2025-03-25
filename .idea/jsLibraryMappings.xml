@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="PROJECT" libraries="{all, bootstrap, chart.js, chartist, chartist-plugin-legend, flag-icon-css, flot-pie, flot-spline, font-awesome, fullcalendar, jquery, jquery-match-height, jquery.flot, jqvmap, moment, normalize.css, pixeden-stroke-7-icon, popper.js, simpleweather, themify-icons, weathericons}" />
+  </component>
+</project>

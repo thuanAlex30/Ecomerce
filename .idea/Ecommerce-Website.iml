@@ -8,5 +8,26 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="normalize.css" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="themify-icons" level="application" />
+    <orderEntry type="library" name="font-awesome" level="application" />
+    <orderEntry type="library" name="pixeden-stroke-7-icon" level="application" />
+    <orderEntry type="library" name="flag-icon-css" level="application" />
+    <orderEntry type="library" name="chartist" level="application" />
+    <orderEntry type="library" name="jqvmap" level="application" />
+    <orderEntry type="library" name="jquery-match-height" level="application" />
+    <orderEntry type="library" name="popper.js" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="fullcalendar" level="application" />
+    <orderEntry type="library" name="weathericons" level="application" />
+    <orderEntry type="library" name="chart.js" level="application" />
+    <orderEntry type="library" name="chartist-plugin-legend" level="application" />
+    <orderEntry type="library" name="flot-pie" level="application" />
+    <orderEntry type="library" name="jquery.flot" level="application" />
+    <orderEntry type="library" name="flot-spline" level="application" />
+    <orderEntry type="library" name="simpleweather" level="application" />
+    <orderEntry type="library" name="moment" level="application" />
+    <orderEntry type="library" name="all" level="application" />
   </component>
 </module>

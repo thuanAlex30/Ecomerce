@@ -6,44 +6,55 @@ const NewProductModel = require("../models/newproduct");
 
 module.exports = {
   //Admin
-  getAdmin: function(req, res, next) {
-    var count = 0; 
-    UserModel.find().then(user => {
-      var data = user.filter(i => i.productNewOrder.order.length > 0);
-      for (var i = 0; i < data.length; i++) {
-        var js = JSON.parse(JSON.stringify(data[i].productNewOrder.order));
-        console.log("data", js[0].sum);
-      }
-      res
-        .render("admin/adminmanager", {
-          path: "/admin",
-          count: count,
-          listusers: user,
-          listorders: data,
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
-  },
+    getAdmin: function(req, res, next) {
+        var count = 0;
+        UserModel.find()
+            .then(user => {
+                if (!user || user.length === 0) {
+                    throw new Error("Không tìm thấy người dùng");
+                }
+
+                var data = user.filter(i => i.productNewOrder?.order?.length > 0);
+
+                // Kiểm tra dữ liệu trước khi truy cập js[0].sum
+                if (data.length > 0 && data[0].productNewOrder.order.length > 0) {
+                    var js = JSON.parse(JSON.stringify(data[0].productNewOrder.order));
+                    console.log("data", js[0]?.sum);
+                }
+
+                res.render("admin/adminmanager", {
+                    path: "/admin",
+                    count: count,
+                    listusers: user,
+                    listorders: data,
+                });
+            })
+            .catch(err => {  // ✅ Đặt .catch() ở đây
+                console.error("Lỗi truy vấn UserModel:", err);
+                res.status(500).send("Lỗi máy chủ: " + err.message);
+            });
+    },
 
   //Manager Users
-  getManagerUsers: function(req, res, next) {
-    req.session.isManager = false;
-    var count = 0;
-    UserModel.find().then(user => {
-      var data = user.filter(i => i.productNewOrder.order.length > 0);
-      res
-        .render("admin/list-user", {
-          path: "/admin/list-user",
-          count: count,
-          listusers: user
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
-  },
+    getManagerUsers: function(req, res, next) {
+        req.session.isManager = false;
+        var count = 0;
+
+        UserModel.find()
+            .then(user => {
+                var data = user.filter(i => i.productNewOrder?.order?.length > 0);
+                res.render("admin/list-user", {
+                    path: "/admin/list-user",
+                    count: count,
+                    listusers: user
+                });
+            })
+            .catch(err => {  // ✅ Đặt catch() ở đây
+                console.error("Lỗi truy vấn UserModel:", err);
+                res.status(500).send("Lỗi máy chủ: " + err.message);
+            });
+    },
+
 
   //Update USer
   getUpdate: function(req, res, next) {
